@@ -26,7 +26,7 @@ namespace AiRpgCombatSimulator
 
         private void CharacterSelect_KeyDown(object sender, KeyEventArgs e)
         {
-            var nextForm = new Combat();
+            var nextForm = new ClassDetails();
             nextForm.Show();
             this.Hide();
         }
