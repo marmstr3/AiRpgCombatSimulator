@@ -53,6 +53,7 @@
       <DependentUpon>CharacterSelect.cs</DependentUpon>
     </Compile>
     <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\Enemies\Lich.cs" />
     <Compile Include="Characters\Players\BlackMage.cs" />
     <Compile Include="Characters\Players\Fighter.cs" />
     <Compile Include="Characters\Players\Thief.cs" />
@@ -145,8 +146,6 @@
   <ItemGroup>
     <None Include="Resources\Lich.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Characters\Enemies\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

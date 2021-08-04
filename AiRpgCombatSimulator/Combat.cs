@@ -17,6 +17,7 @@ namespace AiRpgCombatSimulator
         private Character PlayerCharacter2;
         private Character PlayerCharacter3;
         private Character PlayerCharacter4;
+        private Character Enemy;
 
         public Combat()
         {
@@ -26,28 +27,31 @@ namespace AiRpgCombatSimulator
 
             InitializeComponent();
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Combat_FormClosed);
-            PlayerCharacter1 = new Characters.Players.Fighter();
-            PlayerCharacter2 = new Characters.Players.BlackMage();
-            PlayerCharacter3 = new Characters.Players.Thief();
-            PlayerCharacter4 = new Characters.Players.WhiteMage();
+            this.PlayerCharacter1 = new Characters.Players.Fighter();
+            this.PlayerCharacter2 = new Characters.Players.BlackMage();
+            this.PlayerCharacter3 = new Characters.Players.Thief();
+            this.PlayerCharacter4 = new Characters.Players.WhiteMage();
+            this.Enemy = new Characters.Enemies.Lich();
 
             // Set Sprites
-            this.PlayerSprite1.Image = PlayerCharacter1.Sprite;
-            this.PlayerSprite2.Image = PlayerCharacter2.Sprite;
-            this.PlayerSprite3.Image = PlayerCharacter3.Sprite;
-            this.PlayerSprite4.Image = PlayerCharacter4.Sprite;
+            this.PlayerSprite1.Image = this.PlayerCharacter1.Sprite;
+            this.PlayerSprite2.Image = this.PlayerCharacter2.Sprite;
+            this.PlayerSprite3.Image = this.PlayerCharacter3.Sprite;
+            this.PlayerSprite4.Image = this.PlayerCharacter4.Sprite;
+            this.EnemySprite.Image = this.Enemy.Sprite;
 
             // Set HP and MP
             UpdateHP(this.HpValue1, PlayerCharacter1.MaxHP, PlayerCharacter1.MaxHP);
             UpdateHP(this.HpValue2, PlayerCharacter2.MaxHP, PlayerCharacter2.MaxHP);
             UpdateHP(this.HpValue3, PlayerCharacter3.MaxHP, PlayerCharacter3.MaxHP);
             UpdateHP(this.HpValue4, PlayerCharacter4.MaxHP, PlayerCharacter4.MaxHP);
+            UpdateHP(this.EnemyHpValue, Enemy.MaxHP, Enemy.MaxHP);
 
             UpdateMP(this.MpValue1, PlayerCharacter1.MaxMP, PlayerCharacter1.MaxMP);
             UpdateMP(this.MpValue2, PlayerCharacter2.MaxMP, PlayerCharacter2.MaxMP);
             UpdateMP(this.MpValue3, PlayerCharacter3.MaxMP, PlayerCharacter3.MaxMP);
             UpdateMP(this.MpValue4, PlayerCharacter4.MaxMP, PlayerCharacter4.MaxMP);
-
+            UpdateMP(this.EnemyMpValue, Enemy.MaxMP, Enemy.MaxMP);
         }
 
         private void UpdateHP(Label hpField, int newHp, int maxHp)
