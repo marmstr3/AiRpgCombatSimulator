@@ -52,6 +52,11 @@
     <Compile Include="CharacterSelect.Designer.cs">
       <DependentUpon>CharacterSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\Players\BlackMage.cs" />
+    <Compile Include="Characters\Players\Fighter.cs" />
+    <Compile Include="Characters\Players\Thief.cs" />
+    <Compile Include="Characters\Players\WhiteMage.cs" />
     <Compile Include="ClassDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,6 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Lich.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Characters\Enemies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
