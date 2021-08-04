@@ -60,6 +60,8 @@ namespace AiRpgCombatSimulator.Characters
             this._name = name;
             this._maxHP = maxHP;
             this._maxMP = maxMP;
+            this.CurrentHP = this._maxHP;
+            this.CurrentMP = this._maxMP;
             this.AttackPower = attack_power;
             this.Sprite = sprite;
         }
