@@ -101,9 +101,18 @@ namespace AiRpgCombatSimulator
             switch (e.KeyCode)
             {
                 case Keys.Space:
-                    this.ExecuteSelection();
-                    this.IncrementTurn();
-                    this.CheckTerminalConditions();
+                    if(this.CurrentSelection == 5)
+                    {
+                        // Don't process turn if user selects HELP
+                        this.ExecuteSelection();
+                    }
+                    else
+                    {
+                        this.ExecuteSelection();
+                        this.IncrementTurn();
+                        this.CheckTerminalConditions();
+                    }
+
                     break;
                 case Keys.Left:
                     this.ChangeCombatSelector("left");
@@ -137,7 +146,7 @@ namespace AiRpgCombatSimulator
                     this.UseItem();
                     break;
                 case 4:
-                    this.Defend();
+                    this.Defend(this.PlayerCharacters[this.CurrentCharacterTurn]);
                     break;
                 case 5:
                     this.Help();
@@ -225,14 +234,15 @@ namespace AiRpgCombatSimulator
 
         }
 
-        private void Defend()
+        private void Defend(Character defendingCharacter)
         {
-            this.PlayerCharacters[this.CurrentCharacterTurn].IsDefending = true;
+            defendingCharacter.IsDefending = true;
         }
 
         private void Help()
         {
-
+            var userManual = new UserManual();
+            userManual.Show();
         }
 
         private void CheckTerminalConditions()
