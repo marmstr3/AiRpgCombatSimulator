@@ -13,21 +13,19 @@ namespace AiRpgCombatSimulator
 {
     public partial class Combat : Form
     {
-        private Character PlayerCharacter1;
-        private Character PlayerCharacter2;
-        private Character PlayerCharacter3;
-        private Character PlayerCharacter4;
-        private List<Character> PlayerCharacters;
-        private Character Enemy;
-        private List<PictureBox> CombatSelectors;
-        private List<PictureBox> TurnIndicators;
-        private List<Label> CharacterHpLabels;
-        private List<Label> CharacterMpLabels;
+        private readonly Character PlayerCharacter1;
+        private readonly Character PlayerCharacter2;
+        private readonly Character PlayerCharacter3;
+        private readonly Character PlayerCharacter4;
+        private readonly List<Character> PlayerCharacters;
+        private readonly Character Enemy;
+        private readonly List<PictureBox> CombatSelectors;
+        private readonly List<PictureBox> TurnIndicators;
+        private readonly List<Label> CharacterHpLabels;
+        private readonly List<Label> CharacterMpLabels;
         private int CurrentCharacterTurn;
         private int CurrentSelection;
-        private bool Victory;
-        private bool CombatComplete;
-        private Random RandomGenerator;
+        private readonly Random RandomGenerator;
 
         public Combat()
         {
@@ -88,10 +86,6 @@ namespace AiRpgCombatSimulator
 
             this.RandomGenerator = new Random();
 
-            // State Flags Initialization
-            this.Victory = false;
-            this.CombatComplete = false;
-
             // Initialize Form Values and Sprites
             this.InitializeHP();
             this.InitializeMP();
@@ -104,12 +98,85 @@ namespace AiRpgCombatSimulator
 
         private void Combat_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Space)
+            switch (e.KeyCode)
             {
-                this.Attack(this.PlayerCharacters[this.CurrentCharacterTurn], this.Enemy, this.EnemyHpValue);
-                this.IncrementTurn();
-                this.CheckTerminalConditions();  
+                case Keys.Space:
+                    this.Attack(this.PlayerCharacters[this.CurrentCharacterTurn], this.Enemy, this.EnemyHpValue);
+                    this.IncrementTurn();
+                    this.CheckTerminalConditions();
+                    break;
+                case Keys.Left:
+                    this.ChangeCombatSelector("left");
+                    break;
+                case Keys.Right:
+                    this.ChangeCombatSelector("right");
+                    break;
+                case Keys.Up:
+                    this.ChangeCombatSelector("up");
+                    break;
+                case Keys.Down:
+                    this.ChangeCombatSelector("down");
+                    break;
             }
+        }
+
+        private void ChangeCombatSelector(string direction)
+        {
+            switch (direction){
+                case "left":
+                    if (!this.CurrentSelectionIsLeftmost())
+                    {
+                        this.MoveSelector(this.CurrentSelection - 2);
+                    }
+                    break;
+                case "right":
+                    if (!this.CurrentSelectionIsRightmost())
+                    {
+                        this.MoveSelector(this.CurrentSelection + 2);
+                    }
+                    break;
+                case "up":
+                    if (!this.CurrentSelectionIsUpmost())
+                    {
+                        this.MoveSelector(this.CurrentSelection - 1);
+                    }
+                    break;
+                case "down":
+                    if (!this.CurrentSelectionIsDownmost())
+                    {
+                        this.MoveSelector(this.CurrentSelection + 1);
+                    }
+                    break;
+            }
+        }
+
+        private bool CurrentSelectionIsLeftmost()
+        {
+            return this.CurrentSelection == 0 || this.CurrentSelection == 1;
+        }
+
+        private bool CurrentSelectionIsRightmost()
+        {
+            return this.CurrentSelection == 4 || this.CurrentSelection == 5;
+        }
+
+        private bool CurrentSelectionIsUpmost()
+        {
+            // Upper row selections are even.
+            return this.CurrentSelection % 2 == 0;
+        }
+
+        private bool CurrentSelectionIsDownmost()
+        {
+            // Lower row selections are odd.
+            return this.CurrentSelection % 2 == 1;
+        }
+
+        private void MoveSelector(int selectorIndex)
+        {
+            this.CombatSelectors[this.CurrentSelection].Visible = false;
+            this.CurrentSelection = selectorIndex;
+            this.CombatSelectors[this.CurrentSelection].Visible = true;
         }
 
         private void Attack(Character attacker, Character target, Label targetHpField)
@@ -159,11 +226,15 @@ namespace AiRpgCombatSimulator
                 if (this.CurrentCharacterTurn == 3)
                 {
                     this.ProcessEnemyTurn();
+                    this.TurnIndicators[this.CurrentCharacterTurn].Visible = false;
                     this.CurrentCharacterTurn = 0;
+                    this.TurnIndicators[this.CurrentCharacterTurn].Visible = true;
                 }
                 else
                 {
+                    this.TurnIndicators[this.CurrentCharacterTurn].Visible = false;
                     this.CurrentCharacterTurn++;
+                    this.TurnIndicators[this.CurrentCharacterTurn].Visible = true;
                 }
             } while (this.PlayerCharacters[CurrentCharacterTurn].IsDead && !this.AreAllPlayersDead());
         }
