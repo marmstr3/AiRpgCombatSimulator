@@ -66,6 +66,7 @@ namespace AiRpgCombatSimulator.Characters
         public int AttackPower { get; set; }
         public int CurrentHP { get; set; }
         public int CurrentMP { get; set; }
+        public bool IsDefending { get; set; }
         #endregion
         #region Constructors
         public Character(string name, int maxHP, int maxMP, int attack_power, Image sprite)
@@ -76,6 +77,7 @@ namespace AiRpgCombatSimulator.Characters
             this.CurrentHP = this._maxHP;
             this.CurrentMP = this._maxMP;
             this._isDead = false;
+            this.IsDefending = false;
             this.AttackPower = attack_power;
             this.Sprite = sprite;
         }
@@ -88,7 +90,13 @@ namespace AiRpgCombatSimulator.Characters
 
         public void TakeDamage(int damage)
         {
+            if (this.IsDefending)
+            {
+                damage = damage / 2;
+            }
+
             this.CurrentHP -= damage;
+
             if(this.CurrentHP <= 0)
             {
                 this._isDead = true;

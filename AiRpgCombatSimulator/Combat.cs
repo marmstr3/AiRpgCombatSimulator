@@ -101,7 +101,7 @@ namespace AiRpgCombatSimulator
             switch (e.KeyCode)
             {
                 case Keys.Space:
-                    this.Attack(this.PlayerCharacters[this.CurrentCharacterTurn], this.Enemy, this.EnemyHpValue);
+                    this.ExecuteSelection();
                     this.IncrementTurn();
                     this.CheckTerminalConditions();
                     break;
@@ -116,6 +116,31 @@ namespace AiRpgCombatSimulator
                     break;
                 case Keys.Down:
                     this.ChangeCombatSelector("down");
+                    break;
+            }
+        }
+
+        private void ExecuteSelection()
+        {
+            switch (this.CurrentSelection)
+            {
+                case 0:
+                    this.Attack(this.PlayerCharacters[this.CurrentCharacterTurn], this.Enemy, this.EnemyHpValue);
+                    break;
+                case 1:
+                    this.CastSpell();
+                    break;
+                case 2:
+                    this.UseSkill();
+                    break;
+                case 3:
+                    this.UseItem();
+                    break;
+                case 4:
+                    this.Defend();
+                    break;
+                case 5:
+                    this.Help();
                     break;
             }
         }
@@ -185,6 +210,31 @@ namespace AiRpgCombatSimulator
             this.UpdateHP(targetHpField, target.CurrentHP, target.MaxHP);
         }
 
+        private void CastSpell()
+        {
+
+        }
+
+        private void UseSkill()
+        {
+
+        }
+
+        private void UseItem()
+        {
+
+        }
+
+        private void Defend()
+        {
+            this.PlayerCharacters[this.CurrentCharacterTurn].IsDefending = true;
+        }
+
+        private void Help()
+        {
+
+        }
+
         private void CheckTerminalConditions()
         {
             if(this.Enemy.IsDead && this.AreAllPlayersDead())
@@ -228,15 +278,22 @@ namespace AiRpgCombatSimulator
                     this.ProcessEnemyTurn();
                     this.TurnIndicators[this.CurrentCharacterTurn].Visible = false;
                     this.CurrentCharacterTurn = 0;
-                    this.TurnIndicators[this.CurrentCharacterTurn].Visible = true;
+                    this.SetupNewTurn();
                 }
                 else
                 {
                     this.TurnIndicators[this.CurrentCharacterTurn].Visible = false;
                     this.CurrentCharacterTurn++;
-                    this.TurnIndicators[this.CurrentCharacterTurn].Visible = true;
+                    this.SetupNewTurn();
                 }
             } while (this.PlayerCharacters[CurrentCharacterTurn].IsDead && !this.AreAllPlayersDead());
+        }
+
+        private void SetupNewTurn()
+        {
+            this.TurnIndicators[this.CurrentCharacterTurn].Visible = true;
+            this.MoveSelector(0);
+            this.PlayerCharacters[this.CurrentCharacterTurn].IsDefending = false;
         }
 
         private void ProcessEnemyTurn()
