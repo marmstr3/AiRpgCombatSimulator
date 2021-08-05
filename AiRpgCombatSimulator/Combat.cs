@@ -21,10 +21,13 @@ namespace AiRpgCombatSimulator
         private Character Enemy;
         private List<PictureBox> CombatSelectors;
         private List<PictureBox> TurnIndicators;
+        private List<Label> CharacterHpLabels;
+        private List<Label> CharacterMpLabels;
         private int CurrentCharacterTurn;
         private int CurrentSelection;
         private bool Victory;
         private bool CombatComplete;
+        private Random RandomGenerator;
 
         public Combat()
         {
@@ -50,6 +53,21 @@ namespace AiRpgCombatSimulator
             };
             this.Enemy = new Characters.Enemies.Lich();
 
+            this.CharacterHpLabels = new List<Label>
+            {
+                this.HpValue1,
+                this.HpValue2,
+                this.HpValue3,
+                this.HpValue4
+            };
+            this.CharacterMpLabels = new List<Label>
+            {
+                this.MpValue1,
+                this.MpValue2,
+                this.MpValue3,
+                this.MpValue4
+            };
+
             // Selectors Initialization
             this.CombatSelectors = new List<PictureBox> 
             { 
@@ -67,6 +85,8 @@ namespace AiRpgCombatSimulator
                 this.TurnIndicator3,
                 this.TurnIndicator4
             };
+
+            this.RandomGenerator = new Random();
 
             // State Flags Initialization
             this.Victory = false;
@@ -87,6 +107,8 @@ namespace AiRpgCombatSimulator
             if(e.KeyCode == Keys.Space)
             {
                 this.Attack(this.PlayerCharacters[this.CurrentCharacterTurn], this.Enemy, this.EnemyHpValue);
+                this.IncrementTurn();
+                this.CheckTerminalConditions();  
             }
         }
 
@@ -94,11 +116,63 @@ namespace AiRpgCombatSimulator
         {
             attacker.Attack(target);
             this.UpdateHP(targetHpField, target.CurrentHP, target.MaxHP);
-            
-            if(this.Enemy.CurrentHP <= 0)
+        }
+
+        private void CheckTerminalConditions()
+        {
+            if(this.Enemy.IsDead && this.AreAllPlayersDead())
             {
-                this.AttackLabel.Text = "YOU WIN";
+                //this.AttackLabel.Text = "You have won, but at what cost?";
+                this.RunGameOver("You have won, but at what cost?");
+            } else if (this.Enemy.IsDead)
+            {
+                this.RunGameOver("YOU WIN!");
+            } else if (this.AreAllPlayersDead())
+            {
+                this.RunGameOver("You have lost...");
             }
+        }
+
+        private void RunGameOver(string gameOverMessage) 
+        {
+            var nextForm = new GameOver(gameOverMessage);
+            nextForm.Show();
+            this.Hide();
+        }
+
+        private bool AreAllPlayersDead()
+        {
+            foreach(Character player in this.PlayerCharacters)
+            {
+                if(player.IsDead == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void IncrementTurn()
+        {
+            do
+            {
+                if (this.CurrentCharacterTurn == 3)
+                {
+                    this.ProcessEnemyTurn();
+                    this.CurrentCharacterTurn = 0;
+                }
+                else
+                {
+                    this.CurrentCharacterTurn++;
+                }
+            } while (this.PlayerCharacters[CurrentCharacterTurn].IsDead && !this.AreAllPlayersDead());
+        }
+
+        private void ProcessEnemyTurn()
+        {
+            // Figure out random int generator and create list of hp labels for player characters for the class.
+            int targetIndex = this.RandomGenerator.Next(0, 4);
+            this.Attack(this.Enemy, PlayerCharacters[targetIndex], CharacterHpLabels[targetIndex]);
         }
 
         private void UpdateHP(Label hpField, int newHp, int maxHp)

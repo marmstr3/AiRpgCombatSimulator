@@ -14,6 +14,7 @@ namespace AiRpgCombatSimulator.Characters
         private string _name;
         private int _maxHP;
         private int _maxMP;
+        private bool _isDead;
          
         public string Name
         {
@@ -50,6 +51,18 @@ namespace AiRpgCombatSimulator.Characters
             }
         }
 
+        public bool IsDead
+        {
+            get
+            {
+                return _isDead;
+            }
+            set
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
         public int AttackPower { get; set; }
         public int CurrentHP { get; set; }
         public int CurrentMP { get; set; }
@@ -62,6 +75,7 @@ namespace AiRpgCombatSimulator.Characters
             this._maxMP = maxMP;
             this.CurrentHP = this._maxHP;
             this.CurrentMP = this._maxMP;
+            this._isDead = false;
             this.AttackPower = attack_power;
             this.Sprite = sprite;
         }
@@ -75,6 +89,10 @@ namespace AiRpgCombatSimulator.Characters
         public void TakeDamage(int damage)
         {
             this.CurrentHP -= damage;
+            if(this.CurrentHP <= 0)
+            {
+                this._isDead = true;
+            }
         }
         #endregion
     }
