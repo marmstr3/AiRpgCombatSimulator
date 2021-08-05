@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using AiRpgCombatSimulator.ComplexActions.Consumables;
+using AiRpgCombatSimulator.ComplexActions.Consumables.Items;
+using AiRpgCombatSimulator.ComplexActions.Spells;
 
 namespace AiRpgCombatSimulator.Characters
 {
@@ -11,9 +14,9 @@ namespace AiRpgCombatSimulator.Characters
     {
         #region Fields
         public readonly Image Sprite;
-        private string _name;
-        private int _maxHP;
-        private int _maxMP;
+        private readonly string _name;
+        private readonly int _maxHP;
+        private readonly int _maxMP;
         private bool _isDead;
          
         public string Name
@@ -67,6 +70,10 @@ namespace AiRpgCombatSimulator.Characters
         public int CurrentHP { get; set; }
         public int CurrentMP { get; set; }
         public bool IsDefending { get; set; }
+        public bool IsOiled { get; set; }
+        public List<Consumable> Items { get; set; }
+        public List<Consumable> Skills { get; set; }
+        public List<Spell> Spells { get; set; }
         #endregion
         #region Constructors
         public Character(string name, int maxHP, int maxMP, int attack_power, Image sprite)
@@ -78,6 +85,8 @@ namespace AiRpgCombatSimulator.Characters
             this.CurrentMP = this._maxMP;
             this._isDead = false;
             this.IsDefending = false;
+            this.IsOiled = false;
+
             this.AttackPower = attack_power;
             this.Sprite = sprite;
         }
@@ -88,11 +97,16 @@ namespace AiRpgCombatSimulator.Characters
             target.TakeDamage(this.AttackPower);
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(int damage, string damageType = null)
         {
             if (this.IsDefending)
             {
-                damage = damage / 2;
+                damage /= 2;
+            }
+
+            if (this.IsOiled && damageType == "fire")
+            {
+                damage *= 2;
             }
 
             this.CurrentHP -= damage;

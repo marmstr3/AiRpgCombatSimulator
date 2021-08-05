@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AiRpgCombatSimulator.Characters;
+using AiRpgCombatSimulator.ComplexActions.Consumables;
 
 namespace AiRpgCombatSimulator
 {
@@ -24,7 +25,9 @@ namespace AiRpgCombatSimulator
         private readonly List<Label> CharacterHpLabels;
         private readonly List<Label> CharacterMpLabels;
         private int CurrentCharacterTurn;
+        private Character _currentCharacter;
         private int CurrentSelection;
+        private int _selectedItem;
         private readonly Random RandomGenerator;
 
         public Combat()
@@ -134,19 +137,28 @@ namespace AiRpgCombatSimulator
             switch (this.CurrentSelection)
             {
                 case 0:
-                    this.Attack(this.PlayerCharacters[this.CurrentCharacterTurn], this.Enemy, this.EnemyHpValue);
+                    this.Attack(this._currentCharacter, this.Enemy, this.EnemyHpValue);
                     break;
                 case 1:
                     this.CastSpell();
                     break;
                 case 2:
+                    using (var skillSelection = new SkillSelection(this._currentCharacter.Skills))
+                    {
+                        
+                    }
                     this.UseSkill();
                     break;
                 case 3:
-                    this.UseItem();
+                    using (var itemSelection = new ItemSelection(this._currentCharacter.Items))
+                    {
+                        var result = itemSelection.ShowDialog();
+                        this._selectedItem = itemSelection.Selection;
+                    }
+                    this.UseItem(this._currentCharacter.Items[this._selectedItem], this._currentCharacter, this.Enemy);
                     break;
                 case 4:
-                    this.Defend(this.PlayerCharacters[this.CurrentCharacterTurn]);
+                    this.Defend(this._currentCharacter);
                     break;
                 case 5:
                     this.Help();
@@ -229,9 +241,9 @@ namespace AiRpgCombatSimulator
 
         }
 
-        private void UseItem()
+        private void UseItem(Consumable item, Character user, Character target)
         {
-
+            item.Execute(user, target);
         }
 
         private void Defend(Character defendingCharacter)
@@ -301,9 +313,11 @@ namespace AiRpgCombatSimulator
 
         private void SetupNewTurn()
         {
+            this.UpdateAllHP();
+            this._currentCharacter = this.PlayerCharacters[this.CurrentCharacterTurn];
             this.TurnIndicators[this.CurrentCharacterTurn].Visible = true;
             this.MoveSelector(0);
-            this.PlayerCharacters[this.CurrentCharacterTurn].IsDefending = false;
+            this._currentCharacter.IsDefending = false;
         }
 
         private void ProcessEnemyTurn()
@@ -316,6 +330,18 @@ namespace AiRpgCombatSimulator
         private void UpdateHP(Label hpField, int newHp, int maxHp)
         {
             hpField.Text = newHp + "/" + maxHp;
+        }
+
+        private void UpdateAllHP()
+        {
+            for(int n=0; n<4; n++)
+            {
+                UpdateHP(this.CharacterHpLabels[n], this.PlayerCharacters[n].CurrentHP, this.PlayerCharacters[n].MaxHP);
+            }
+
+            UpdateHP(this.EnemyHpValue, this.Enemy.CurrentHP, this.Enemy.MaxHP);
+
+            
         }
 
         private void UpdateMP(Label mpField, int newMp, int maxMp)
@@ -361,6 +387,7 @@ namespace AiRpgCombatSimulator
 
             this.TurnIndicators[0].Visible = true;
             this.CurrentCharacterTurn = 0;
+            this._currentCharacter = this.PlayerCharacters[this.CurrentCharacterTurn];
         }
 
         private void InitializeSelectors()
@@ -378,6 +405,5 @@ namespace AiRpgCombatSimulator
         {
             Application.Exit();
         }
-
     }
 }

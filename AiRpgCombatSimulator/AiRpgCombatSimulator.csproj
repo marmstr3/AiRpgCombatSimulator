@@ -58,6 +58,18 @@
     <Compile Include="Characters\Players\Fighter.cs" />
     <Compile Include="Characters\Players\Thief.cs" />
     <Compile Include="Characters\Players\WhiteMage.cs" />
+    <Compile Include="ItemSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemSelection.Designer.cs">
+      <DependentUpon>ItemSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillSelection.Designer.cs">
+      <DependentUpon>SkillSelection.cs</DependentUpon>
+    </Compile>
     <Compile Include="ClassDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,7 +82,10 @@
     <Compile Include="Combat.Designer.cs">
       <DependentUpon>Combat.cs</DependentUpon>
     </Compile>
-    <Compile Include="Consumables\Consumable.cs" />
+    <Compile Include="ComplexActions\ComplexAction.cs" />
+    <Compile Include="ComplexActions\Consumables\Consumable.cs" />
+    <Compile Include="ComplexActions\Consumables\Items\OilFlask.cs" />
+    <Compile Include="ComplexActions\Spells\Spell.cs" />
     <Compile Include="GameOver.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +114,12 @@
     </Compile>
     <EmbeddedResource Include="CharacterSelect.resx">
       <DependentUpon>CharacterSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemSelection.resx">
+      <DependentUpon>ItemSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillSelection.resx">
+      <DependentUpon>SkillSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ClassDetails.resx">
       <DependentUpon>ClassDetails.cs</DependentUpon>
@@ -165,6 +186,8 @@
   <ItemGroup>
     <None Include="Resources\Lich.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ComplexActions\Consumables\Skills\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
