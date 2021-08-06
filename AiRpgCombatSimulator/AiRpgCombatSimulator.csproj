@@ -58,6 +58,7 @@
     <Compile Include="Characters\Players\Fighter.cs" />
     <Compile Include="Characters\Players\Thief.cs" />
     <Compile Include="Characters\Players\WhiteMage.cs" />
+    <Compile Include="ComplexActions\Spells\Fireball.cs" />
     <Compile Include="ItemSelection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +99,12 @@
     <Compile Include="MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpellSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpellSelection.Designer.cs">
+      <DependentUpon>SpellSelection.cs</DependentUpon>
+    </Compile>
     <Compile Include="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpellSelection.resx">
+      <DependentUpon>SpellSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>

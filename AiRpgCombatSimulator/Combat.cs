@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AiRpgCombatSimulator.Characters;
 using AiRpgCombatSimulator.ComplexActions.Consumables;
+using AiRpgCombatSimulator.ComplexActions.Spells;
 
 namespace AiRpgCombatSimulator
 {
@@ -28,6 +29,7 @@ namespace AiRpgCombatSimulator
         private Character _currentCharacter;
         private int CurrentSelection;
         private int _selectedItem;
+        private int _selectedSpell;
         private readonly Random RandomGenerator;
 
         public Combat()
@@ -140,7 +142,12 @@ namespace AiRpgCombatSimulator
                     this.Attack(this._currentCharacter, this.Enemy, this.EnemyHpValue);
                     break;
                 case 1:
-                    this.CastSpell();
+                    using (var spellSelection = new SpellSelection(this._currentCharacter.Spells))
+                    {
+                        spellSelection.ShowDialog();
+                        this._selectedSpell = spellSelection.Selection;
+                    }
+                        this.CastSpell(this._currentCharacter.Spells[this._selectedSpell], this._currentCharacter, this.Enemy);
                     break;
                 case 2:
                     using (var skillSelection = new SkillSelection(this._currentCharacter.Skills))
@@ -152,7 +159,7 @@ namespace AiRpgCombatSimulator
                 case 3:
                     using (var itemSelection = new ItemSelection(this._currentCharacter.Items))
                     {
-                        var result = itemSelection.ShowDialog();
+                        itemSelection.ShowDialog();
                         this._selectedItem = itemSelection.Selection;
                     }
                     this.UseItem(this._currentCharacter.Items[this._selectedItem], this._currentCharacter, this.Enemy);
@@ -231,9 +238,9 @@ namespace AiRpgCombatSimulator
             this.UpdateHP(targetHpField, target.CurrentHP, target.MaxHP);
         }
 
-        private void CastSpell()
+        private void CastSpell(Spell spell, Character caster, Character target)
         {
-
+            spell.Execute(caster, target);
         }
 
         private void UseSkill()

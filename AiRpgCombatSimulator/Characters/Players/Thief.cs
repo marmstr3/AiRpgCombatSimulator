@@ -17,11 +17,11 @@ namespace AiRpgCombatSimulator.Characters.Players
             this.Items = new List<Consumable>
             {
                 new OilFlask(),
-                null,
-                null,
-                null,
-                null,
-                null                            
+                new OilFlask(),
+                new OilFlask(),
+                new OilFlask(),
+                new OilFlask(),
+                new OilFlask()
             };
             this.Skills = new List<Consumable> { };
             this.Spells = new List<Spell> { };
