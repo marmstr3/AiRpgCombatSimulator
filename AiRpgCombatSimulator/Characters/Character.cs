@@ -14,45 +14,10 @@ namespace AiRpgCombatSimulator.Characters
     {
         #region Fields
         public readonly Image Sprite;
-        private readonly string _name;
-        private readonly int _maxHP;
-        private readonly int _maxMP;
+        public readonly string Name;
+        public readonly int MaxHP;
+        public readonly int MaxMP;
         private bool _isDead;
-         
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                throw new InvalidOperationException();
-            }
-        }
-        public int MaxHP
-        {
-            get
-            {
-                return _maxHP;
-            }
-            set
-            {
-                throw new InvalidOperationException();
-            }
-        } 
-
-        public int MaxMP
-        {
-            get
-            {
-                return _maxMP;
-            }
-            set
-            {
-                throw new InvalidOperationException();
-            }
-        }
 
         public bool IsDead
         {
@@ -76,23 +41,25 @@ namespace AiRpgCombatSimulator.Characters
         public List<Consumable> Skills { get; set; }
         public List<Spell> Spells { get; set; }
         #endregion
+
         #region Constructors
-        public Character(string name, int maxHP, int maxMP, int attack_power, Image sprite)
+        public Character(string name, int maxHP, int maxMP, int attackPower, Image sprite)
         {
-            this._name = name;
-            this._maxHP = maxHP;
-            this._maxMP = maxMP;
-            this.CurrentHP = this._maxHP;
-            this.CurrentMP = this._maxMP;
+            this.Name = name;
+            this.MaxHP = maxHP;
+            this.MaxMP = maxMP;
+            this.CurrentHP = this.MaxHP;
+            this.CurrentMP = this.MaxMP;
             this._isDead = false;
             this.IsDefending = false;
             this.IsOiled = false;
             this.IsEmpowered = false;
 
-            this.AttackPower = attack_power;
+            this.AttackPower = attackPower;
             this.Sprite = sprite;
         }
         #endregion
+
         #region Methods
         public void Attack(Character target)
         {

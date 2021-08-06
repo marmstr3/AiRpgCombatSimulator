@@ -115,7 +115,7 @@ namespace AiRpgCombatSimulator
                     else
                     {
                         this.ExecuteSelection();
-                        this.IncrementTurn();
+                        if (!this.Enemy.IsDead) { this.IncrementTurn(); } 
                         this.CheckTerminalConditions();
                     }
 
@@ -363,7 +363,12 @@ namespace AiRpgCombatSimulator
         private void ProcessEnemyTurn()
         {
             // Figure out random int generator and create list of hp labels for player characters for the class.
-            int targetIndex = this.RandomGenerator.Next(0, 4);
+            int targetIndex;
+            do
+            {
+                targetIndex = this.RandomGenerator.Next(0, 4);
+            } while (PlayerCharacters[targetIndex].IsDead);
+            
             this.Attack(this.Enemy, PlayerCharacters[targetIndex], CharacterHpLabels[targetIndex]);
         }
 

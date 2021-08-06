@@ -7,7 +7,7 @@ using AiRpgCombatSimulator.ComplexActions.Spells;
 namespace AiRpgCombatSimulatorTests
 {
     [TestClass]
-    class SpellTests
+    public class SpellTests
     {
         [TestMethod]
         public void TestFireBall()

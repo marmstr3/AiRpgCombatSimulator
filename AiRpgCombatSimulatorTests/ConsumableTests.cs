@@ -8,7 +8,7 @@ using AiRpgCombatSimulator.ComplexActions.Consumables.Items;
 namespace AiRpgCombatSimulatorTests
 {
     [TestClass]
-    class ConsumableTests
+    public class ConsumableTests
     {
         [TestMethod]
         public void TestOilFlask()

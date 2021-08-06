@@ -9,16 +9,13 @@ namespace AiRpgCombatSimulator.ComplexActions
 {
     public abstract class ComplexAction
     {
-        private readonly string _name;
-        private readonly string _description;
-
-        public string Name { get { return this._name; } }
-        public string Description { get { return this._description; } }
+        public readonly string Name;
+        public readonly string Description;
 
         public ComplexAction(string name, string description)
         {
-            this._name = name;
-            this._description = description;
+            this.Name = name;
+            this.Description = description;
         }
         
         public abstract void Execute(Character executor, List<Character> targets);
