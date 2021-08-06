@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AiRpgCombatSimulator.Characters.Players
 {
-    class Fighter: Character
+    public class Fighter: Character
     {
 
         #region Constructors

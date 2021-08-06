@@ -7,7 +7,7 @@ using AiRpgCombatSimulator.Characters;
 
 namespace AiRpgCombatSimulator.ComplexActions.Spells
 {
-    class Fireball : Spell
+    public class Fireball : Spell
     {
 
         public Fireball() :

@@ -7,7 +7,7 @@ using AiRpgCombatSimulator.Characters;
 
 namespace AiRpgCombatSimulator.ComplexActions.Consumables.Items
 {
-    class OilFlask: Consumable
+    public class OilFlask: Consumable
     {
         public OilFlask():
             base("Oil Flask",

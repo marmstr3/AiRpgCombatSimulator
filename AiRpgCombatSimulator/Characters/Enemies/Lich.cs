@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AiRpgCombatSimulator.Characters.Enemies
 {
-    class Lich: Character
+    public class Lich: Character
     {
         public Lich():
             base("Lich", 400, 150, 10, Properties.Resources.Lich)

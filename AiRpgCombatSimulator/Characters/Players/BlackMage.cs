@@ -8,7 +8,7 @@ using AiRpgCombatSimulator.ComplexActions.Spells;
 
 namespace AiRpgCombatSimulator.Characters.Players
 {
-    class BlackMage: Character
+    public class BlackMage: Character
     {
         public BlackMage() :
             base("Black Mage", 50, 50, 5, Properties.Resources.BlackMage)

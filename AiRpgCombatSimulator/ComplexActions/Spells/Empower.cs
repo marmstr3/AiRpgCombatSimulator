@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AiRpgCombatSimulator.ComplexActions.Spells
 {
-    class Empower: Spell
+    public class Empower: Spell
     {
         public Empower():
             base("Empower", "All ally attacks do 1.5x damage for one turn.", 10, "allies")

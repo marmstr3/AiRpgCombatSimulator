@@ -9,7 +9,7 @@ using AiRpgCombatSimulator.ComplexActions.Spells;
 
 namespace AiRpgCombatSimulator.Characters.Players
 {
-    class Thief: Character
+    public class Thief: Character
     {
         public Thief():
             base("Thief", 50, 50, 7, Properties.Resources.Thief)
