@@ -117,4 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Navigate with the Arrow Keys, Press Spacebar to make a selection.
+
+Fighter and Thief currently do not have Spells.
+Fighter, Black Mage, and White Mage currently do not have Items.
+Skills are not yet implemented.
+
+Attempting to use a Spell/Item/Skill on a class that does not have 
+them will lead to a program crash.
+
+The Black Mage has a Fireball spell that does high damage.
+The Thief has an Oil Flask that makes the enemy take double damage 
+from Fireball.
+The White Mage has an Empower spell that makes everyone in the party 
+do double damage for 1 turn.
+
+Defend halves the damage the character takes for 1 turn.</value>
+  </data>
 </root>

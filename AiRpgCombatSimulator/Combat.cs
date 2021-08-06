@@ -26,11 +26,11 @@ namespace AiRpgCombatSimulator
         private readonly List<Label> CharacterHpLabels;
         private readonly List<Label> CharacterMpLabels;
         private int CurrentCharacterTurn;
-        private Character _currentCharacter;
+        private Character CurrentCharacter;
         private int CurrentSelection;
-        private int _selectedItem;
-        private int _selectedSpell;
-        private string _targetType;
+        private int SelectedItem;
+        private int SelectedSpell;
+        private string TargetType;
         private readonly Random RandomGenerator;
 
         public Combat()
@@ -140,43 +140,43 @@ namespace AiRpgCombatSimulator
             switch (this.CurrentSelection)
             {
                 case 0:
-                    this.Attack(this._currentCharacter, this.Enemy, this.EnemyHpValue);
+                    this.Attack(this.CurrentCharacter, this.Enemy, this.EnemyHpValue);
                     break;
                 case 1:
-                    using (var spellSelection = new SpellSelection(this._currentCharacter.Spells))
+                    using (var spellSelection = new SpellSelection(this.CurrentCharacter.Spells))
                     {
                         spellSelection.ShowDialog();
-                        this._targetType = spellSelection.TargetType;
-                        this._selectedSpell = spellSelection.Selection;
+                        this.TargetType = spellSelection.TargetType;
+                        this.SelectedSpell = spellSelection.Selection;
                     }
-                    Spell spell = this._currentCharacter.Spells[this._selectedSpell];
-                    if(this._currentCharacter.CurrentMP >= spell.MpCost)
+                    Spell spell = this.CurrentCharacter.Spells[this.SelectedSpell];
+                    if(this.CurrentCharacter.CurrentMP >= spell.MpCost)
                     {
-                        this.CastSpell(this._currentCharacter.Spells[this._selectedSpell], this._targetType);
+                        this.CastSpell(this.CurrentCharacter.Spells[this.SelectedSpell], this.TargetType);
                     }
                     break;
                 case 2:
-                    using (var skillSelection = new SkillSelection(this._currentCharacter.Skills))
+                    using (var skillSelection = new SkillSelection(this.CurrentCharacter.Skills))
                     {
                         
                     }
                     this.UseSkill();
                     break;
                 case 3:
-                    using (var itemSelection = new ItemSelection(this._currentCharacter.Items))
+                    using (var itemSelection = new ItemSelection(this.CurrentCharacter.Items))
                     {
                         itemSelection.ShowDialog();
-                        this._targetType = "enemy";
-                        this._selectedItem = itemSelection.Selection;
+                        this.TargetType = "enemy";
+                        this.SelectedItem = itemSelection.Selection;
                     }
-                    Consumable item = this._currentCharacter.Items[this._selectedItem];
+                    Consumable item = this.CurrentCharacter.Items[this.SelectedItem];
                     if(item.Quantity > 0)
                     {
-                        this.UseItem(this._currentCharacter.Items[this._selectedItem], this._currentCharacter, this._targetType);
+                        this.UseItem(this.CurrentCharacter.Items[this.SelectedItem], this.CurrentCharacter, this.TargetType);
                     }
                     break;
                 case 4:
-                    this.Defend(this._currentCharacter);
+                    this.Defend(this.CurrentCharacter);
                     break;
                 case 5:
                     this.Help();
@@ -261,7 +261,7 @@ namespace AiRpgCombatSimulator
                     targets = this.PlayerCharacters;
                     break;
             }
-            spell.Execute(this._currentCharacter, targets);
+            spell.Execute(this.CurrentCharacter, targets);
             
         }
 
@@ -354,10 +354,10 @@ namespace AiRpgCombatSimulator
         {
             this.UpdateAllHP();
             this.UpdateAllMP();
-            this._currentCharacter = this.PlayerCharacters[this.CurrentCharacterTurn];
+            this.CurrentCharacter = this.PlayerCharacters[this.CurrentCharacterTurn];
             this.TurnIndicators[this.CurrentCharacterTurn].Visible = true;
             this.MoveSelector(0);
-            this._currentCharacter.IsDefending = false;
+            this.CurrentCharacter.IsDefending = false;
         }
 
         private void ProcessEnemyTurn()
@@ -442,7 +442,7 @@ namespace AiRpgCombatSimulator
 
             this.TurnIndicators[0].Visible = true;
             this.CurrentCharacterTurn = 0;
-            this._currentCharacter = this.PlayerCharacters[this.CurrentCharacterTurn];
+            this.CurrentCharacter = this.PlayerCharacters[this.CurrentCharacterTurn];
         }
 
         private void InitializeSelectors()
