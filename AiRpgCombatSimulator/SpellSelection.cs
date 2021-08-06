@@ -15,12 +15,16 @@ namespace AiRpgCombatSimulator
     {
         private readonly List<Label> _spellNames;
         private readonly List<PictureBox> _selectors;
+        private List<Spell> _spells;
         public int Selection { get; set; }
+        public string TargetType;
         private int _currentSelection;
         public SpellSelection(List<Spell> spells)
         {
             InitializeComponent();
             this.KeyDown += SpellSelection_KeyDown;
+
+            this._spells = spells;
 
             this._spellNames = new List<Label>
             {
@@ -58,6 +62,7 @@ namespace AiRpgCombatSimulator
             {
                 case Keys.Space:
                     this.Selection = this._currentSelection;
+                    this.TargetType = this._spells[this._currentSelection].Target;
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                     break;

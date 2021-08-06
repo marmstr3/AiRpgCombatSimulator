@@ -21,6 +21,6 @@ namespace AiRpgCombatSimulator.ComplexActions
             this._description = description;
         }
         
-        public abstract void Execute(Character executor, Character target);
+        public abstract void Execute(Character executor, List<Character> targets);
     }
 }

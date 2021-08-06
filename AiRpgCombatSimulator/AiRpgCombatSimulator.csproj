@@ -58,6 +58,7 @@
     <Compile Include="Characters\Players\Fighter.cs" />
     <Compile Include="Characters\Players\Thief.cs" />
     <Compile Include="Characters\Players\WhiteMage.cs" />
+    <Compile Include="ComplexActions\Spells\Empower.cs" />
     <Compile Include="ComplexActions\Spells\Fireball.cs" />
     <Compile Include="ItemSelection.cs">
       <SubType>Form</SubType>

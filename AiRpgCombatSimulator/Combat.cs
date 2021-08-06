@@ -30,6 +30,7 @@ namespace AiRpgCombatSimulator
         private int CurrentSelection;
         private int _selectedItem;
         private int _selectedSpell;
+        private string _targetType;
         private readonly Random RandomGenerator;
 
         public Combat()
@@ -145,9 +146,14 @@ namespace AiRpgCombatSimulator
                     using (var spellSelection = new SpellSelection(this._currentCharacter.Spells))
                     {
                         spellSelection.ShowDialog();
+                        this._targetType = spellSelection.TargetType;
                         this._selectedSpell = spellSelection.Selection;
                     }
-                        this.CastSpell(this._currentCharacter.Spells[this._selectedSpell], this._currentCharacter, this.Enemy);
+                    Spell spell = this._currentCharacter.Spells[this._selectedSpell];
+                    if(this._currentCharacter.CurrentMP >= spell.MpCost)
+                    {
+                        this.CastSpell(this._currentCharacter.Spells[this._selectedSpell], this._targetType);
+                    }
                     break;
                 case 2:
                     using (var skillSelection = new SkillSelection(this._currentCharacter.Skills))
@@ -160,9 +166,14 @@ namespace AiRpgCombatSimulator
                     using (var itemSelection = new ItemSelection(this._currentCharacter.Items))
                     {
                         itemSelection.ShowDialog();
+                        this._targetType = "enemy";
                         this._selectedItem = itemSelection.Selection;
                     }
-                    this.UseItem(this._currentCharacter.Items[this._selectedItem], this._currentCharacter, this.Enemy);
+                    Consumable item = this._currentCharacter.Items[this._selectedItem];
+                    if(item.Quantity > 0)
+                    {
+                        this.UseItem(this._currentCharacter.Items[this._selectedItem], this._currentCharacter, this._targetType);
+                    }
                     break;
                 case 4:
                     this.Defend(this._currentCharacter);
@@ -238,9 +249,20 @@ namespace AiRpgCombatSimulator
             this.UpdateHP(targetHpField, target.CurrentHP, target.MaxHP);
         }
 
-        private void CastSpell(Spell spell, Character caster, Character target)
+        private void CastSpell(Spell spell, string target_type)
         {
-            spell.Execute(caster, target);
+            List<Character> targets = null;
+            switch (target_type)
+            {
+                case "enemy":
+                    targets = new List<Character> { this.Enemy };
+                    break;
+                case "allies":
+                    targets = this.PlayerCharacters;
+                    break;
+            }
+            spell.Execute(this._currentCharacter, targets);
+            
         }
 
         private void UseSkill()
@@ -248,9 +270,19 @@ namespace AiRpgCombatSimulator
 
         }
 
-        private void UseItem(Consumable item, Character user, Character target)
+        private void UseItem(Consumable item, Character user, string target_type)
         {
-            item.Execute(user, target);
+            List<Character> targets = null;
+            switch (target_type)
+            {
+                case "enemy":
+                    targets = new List<Character> { this.Enemy };
+                    break;
+                case "allies":
+                    targets = this.PlayerCharacters;
+                    break;
+            }
+            item.Execute(user, targets);
         }
 
         private void Defend(Character defendingCharacter)
@@ -321,6 +353,7 @@ namespace AiRpgCombatSimulator
         private void SetupNewTurn()
         {
             this.UpdateAllHP();
+            this.UpdateAllMP();
             this._currentCharacter = this.PlayerCharacters[this.CurrentCharacterTurn];
             this.TurnIndicators[this.CurrentCharacterTurn].Visible = true;
             this.MoveSelector(0);
@@ -349,6 +382,16 @@ namespace AiRpgCombatSimulator
             UpdateHP(this.EnemyHpValue, this.Enemy.CurrentHP, this.Enemy.MaxHP);
 
             
+        }
+
+        private void UpdateAllMP()
+        {
+            for(int n=0; n<4; n++)
+            {
+                UpdateMP(this.CharacterMpLabels[n], this.PlayerCharacters[n].CurrentMP, this.PlayerCharacters[n].MaxMP);
+            }
+
+            UpdateMP(this.EnemyMpValue, this.Enemy.CurrentMP, this.Enemy.MaxMP);
         }
 
         private void UpdateMP(Label mpField, int newMp, int maxMp)

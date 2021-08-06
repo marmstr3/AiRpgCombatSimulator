@@ -17,10 +17,14 @@ namespace AiRpgCombatSimulator.ComplexActions.Consumables.Items
         {
         }
 
-        public override void Execute(Character executor, Character target)
+        public override void Execute(Character executor, List<Character> targets)
         {
-            target.IsOiled = true;
-            this.Quantity -= 1;
+            foreach(Character target in targets)
+            {
+                target.IsOiled = true;
+                this.Quantity -= 1;
+            }
+            
         }
 
     }

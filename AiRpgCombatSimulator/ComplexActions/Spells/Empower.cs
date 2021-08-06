@@ -1,18 +1,18 @@
-﻿using System;
+﻿using AiRpgCombatSimulator.Characters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AiRpgCombatSimulator.Characters;
 
 namespace AiRpgCombatSimulator.ComplexActions.Spells
 {
-    class Fireball : Spell
+    class Empower: Spell
     {
-
-        public Fireball() :
-            base("Fireball", "Blast the enemy with a ball of concentrated fire.", 10, "enemy")
+        public Empower():
+            base("Empower", "All ally attacks do 1.5x damage for one turn.", 10, "allies")
         {
+
         }
 
         public override void Execute(Character executor, List<Character> targets)
@@ -20,8 +20,9 @@ namespace AiRpgCombatSimulator.ComplexActions.Spells
             executor.CurrentMP -= this.MpCost;
             foreach(Character target in targets)
             {
-                target.TakeDamage(25, "fire");
+                target.IsEmpowered = true;
             }
+            
         }
     }
 }

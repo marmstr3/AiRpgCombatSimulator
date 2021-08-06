@@ -71,6 +71,7 @@ namespace AiRpgCombatSimulator.Characters
         public int CurrentMP { get; set; }
         public bool IsDefending { get; set; }
         public bool IsOiled { get; set; }
+        public bool IsEmpowered { get; set; }
         public List<Consumable> Items { get; set; }
         public List<Consumable> Skills { get; set; }
         public List<Spell> Spells { get; set; }
@@ -86,6 +87,7 @@ namespace AiRpgCombatSimulator.Characters
             this._isDead = false;
             this.IsDefending = false;
             this.IsOiled = false;
+            this.IsEmpowered = false;
 
             this.AttackPower = attack_power;
             this.Sprite = sprite;
@@ -94,7 +96,15 @@ namespace AiRpgCombatSimulator.Characters
         #region Methods
         public void Attack(Character target)
         {
-            target.TakeDamage(this.AttackPower);
+            if (this.IsEmpowered)
+            {
+                target.TakeDamage(2 * this.AttackPower);
+            }
+            else
+            {
+                target.TakeDamage(this.AttackPower);
+            }
+            
         }
 
         public void TakeDamage(int damage, string damageType = null)
